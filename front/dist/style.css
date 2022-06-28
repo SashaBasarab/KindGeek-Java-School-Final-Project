@@ -1,0 +1,354 @@
+/* Material Customization */
+:root {
+    --pure-material-primary-rgb: 255, 191, 0;
+    --pure-material-onsurface-rgb: 0, 0, 0;
+}
+
+body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background: url("https://res.cloudinary.com/finnhvman/image/upload/v1541930411/pattern.png");
+}
+
+.registration {
+    position: relative;
+    border-radius: 8px;
+    padding: 16px 48px;
+    box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
+    overflow: hidden;
+    background-color: white;
+}
+
+h1 {
+    margin: 32px 0;
+    font-family: "Roboto", "Segoe UI", BlinkMacSystemFont, system-ui, -apple-system;
+    font-weight: normal;
+    text-align: center;
+}
+
+.registration > label {
+    display: block;
+    margin: 24px 0;
+    width: 320px;
+}
+
+a {
+    color: rgb(var(--pure-material-primary-rgb));
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+button {
+    display: block !important;
+    margin: 32px auto;
+}
+
+.done,
+.progress {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+    visibility: hidden;
+}
+
+.done {
+    transition: visibility 0s 1s;
+}
+
+.signed > .done {
+    visibility: visible;
+}
+
+.done > a {
+    display: inline-block;
+    text-decoration: none;
+}
+
+.progress {
+    opacity: 0;
+}
+
+.signed > .progress {
+    animation: loading 4s;
+}
+
+@keyframes loading {
+    0% {
+        visibility: visible;
+    }
+    12.5% {
+        opacity: 0;
+    }
+    25% {
+        opacity: 1;
+    }
+    87.5% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+
+.left-footer,
+.right-footer {
+    position: fixed;
+    padding: 14px;
+    bottom: 14px;
+    color: #555;
+    background-color: #eee;
+    font-family: "Roboto", "Segoe UI", BlinkMacSystemFont, system-ui, -apple-system;
+    font-size: 14px;
+    line-height: 1.5;
+    box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
+}
+
+.left-footer {
+    left: 0;
+    border-radius: 0 4px 4px 0;
+    text-align: left;
+}
+
+.right-footer {
+    right: 0;
+    border-radius: 4px 0 0 4px;
+    text-align: right;
+}
+
+.left-footer > a,
+.right-footer > a {
+    color: black;
+}
+
+.left-footer > a:hover,
+.right-footer > a:hover {
+    text-decoration: underline;
+}
+
+input {
+    padding: 5%;
+	border: 1px solid #ccc;
+	border-radius: 3px;
+	margin-bottom: 10px;
+	width: 100%;
+	box-sizing: border-box;
+	font-family: montserrat;
+	color: #2C3E50;
+	font-size: 15px;
+}
+
+button {
+    margin-top: 7%;
+    width: 60%;
+    height: 45px;
+    border: none;
+    outline: none;
+    background: #2f2f2f;
+    color: #fff;
+    font-size: 17px;
+    border-radius: 40px;
+    text-align: center;
+    box-shadow: 0 6px 20px -5px rgba(0,0,0,0.4);
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+/* button */
+
+.toggle {
+    align-items: center;
+    border-radius: 100px;
+    display: flex;
+    font-weight: 700;
+    margin-bottom: 16px;
+  }
+  .toggle:last-of-type {
+    margin: 0;
+  }
+  
+  .toggle__input {
+    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+    height: 1px;
+    overflow: hidden;
+    position: absolute;
+    white-space: nowrap;
+    width: 1px;
+  }
+  .toggle__input:not([disabled]):active + .toggle-track, .toggle__input:not([disabled]):focus + .toggle-track {
+    border: 1px solid transparent;
+    box-shadow: 0px 0px 0px 2px #121943;
+  }
+  .toggle__input:disabled + .toggle-track {
+    cursor: not-allowed;
+    opacity: 0.7;
+  }
+  
+  .toggle-track {
+    background: #e5efe9;
+    border: 1px solid #383838;
+    border-radius: 100px;
+    cursor: pointer;
+    display: flex;
+    height: 20px;
+    margin-right: 12px;
+    position: relative;
+    width: 50px;
+  }
+  
+  .toggle-indicator {
+    align-items: center;
+    background: #3a3a3a;
+    border-radius: 24px;
+    bottom: 2px;
+    display: flex;
+    height: 14px;
+    justify-content: center;
+    left: 2px;
+    outline: solid 2px transparent;
+    position: absolute;
+    transition: 0.25s;
+    width: 14px;
+  }
+  
+  .checkMark {
+    fill: #fff;
+    height: 20px;
+    width: 20px;
+    opacity: 0;
+    transition: opacity 0.25s ease-in-out;
+  }
+  
+  .toggle__input:checked + .toggle-track .toggle-indicator {
+    background: #3a3a3a;
+    transform: translateX(30px);
+  }
+  .toggle__input:checked + .toggle-track .toggle-indicator .checkMark {
+    opacity: 1;
+    transition: opacity 0.25s ease-in-out;
+  }
+  
+  @media screen and (-ms-high-contrast: active) {
+    .toggle-track {
+      border-radius: 0;
+    }
+  }
+
+  /* button */
+
+  /* user-profile */
+
+.main-body {
+    padding: 15px;
+}
+.card {
+    box-shadow: 0 1px 3px 0 rgba(0,0,0,.1), 0 1px 2px 0 rgba(0,0,0,.06);
+}
+
+.card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+    background-color: #fff;
+    background-clip: border-box;
+    border: 0 solid rgba(0,0,0,.125);
+    border-radius: .25rem;
+}
+
+.card-body {
+    flex: 1 1 auto;
+    min-height: 1px;
+    padding: 1rem;
+}
+
+.gutters-sm {
+    margin-right: -8px;
+    margin-left: -8px;
+}
+
+.gutters-sm>.col, .gutters-sm>[class*=col-] {
+    padding-right: 8px;
+    padding-left: 8px;
+}
+.mb-3, .my-3 {
+    margin-bottom: 1rem!important;
+}
+
+.bg-gray-300 {
+    background-color: #e2e8f0;
+}
+.h-100 {
+    height: 100%!important;
+}
+.shadow-none {
+    box-shadow: none!important;
+}
+
+.mb-0 {
+    width: 100px;
+}
+
+/* user-profile */
+
+/* user-profile */
+
+/* user-update-profile-info */
+    #file {
+        width: 50%;
+        margin-left: 25%;
+        color: transparent;
+    }
+
+    #save_changes {
+        background-color: #ffcf3f;
+        color: black;
+    }
+/* user-update-profile-info */
+
+/* friends */
+
+.header_image {
+    all: unset;
+}
+
+
+
+/* friends */
+
+.find_friend {
+    position: relative;
+    border-radius: 8px;
+    padding: 16px 48px;
+    box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
+    overflow: hidden;
+    background-color: white;
+}
+
+.find_friend > label {
+    display: block;
+    margin: 24px 0;
+    width: 620px;
+}
+
+#find_button {
+    width: 30%;
+}
+
+.find {
+    float: right;
+}

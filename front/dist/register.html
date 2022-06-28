@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <title>CodePen - Material Registration Form - Pure CSS Material Components</title>
+  <link rel="stylesheet" href="./style.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+</head>
+<body>
+<!-- partial:index.partial.html -->
+<form class="registration" method="post">
+  <h1>👋 Welcome!</h1>
+
+  <label class="pure-material-textfield-outlined">
+    <input placeholder="Username" name="username" type="text" required>
+ </label>
+
+  <label class="pure-material-textfield-outlined">
+     <input placeholder="Email" name="email" type="email" required>
+  </label>
+
+  <label class="pure-material-textfield-outlined">
+    <input placeholder="Password" name="password" type="password" required>
+  </label>
+  
+  <label class="pure-material-textfield-outlined">
+    <input placeholder="Nationality" name="nationality" type="text" required>
+ </label>
+
+ <label class="pure-material-textfield-outlined">
+    <input placeholder="Mother tongue" name="motherTongue" type="text" required>
+  </label>
+
+  <!-- // -->
+
+  <h3>Choose your hobbies</h3>
+
+  <p class="parent">
+    <label class="toggle" for="uniqueID">
+      <input type="checkbox" class="toggle__input" name="interests" value="anime" id="uniqueID" />
+      <span class="toggle-track">
+        <span class="toggle-indicator">
+        </span>
+      </span>
+      Anime
+    </label>
+
+    
+    <label class="toggle" for="uniqueID1">
+      <input type="checkbox" class="toggle__input" name="interests" value="computer games" id="uniqueID1" />
+      <span class="toggle-track">
+        <span class="toggle-indicator">
+        </span>
+      </span>
+      Computer games
+    </label>
+
+    
+    <label class="toggle" for="uniqueID2">
+      <input type="checkbox" class="toggle__input" name="interests" value="football" id="uniqueID2" />
+      <span class="toggle-track">
+        <span class="toggle-indicator">
+        </span>
+      </span>
+      Football
+    </label>
+
+    <label class="toggle" for="uniqueID3">
+      <input type="checkbox" class="toggle__input" name="interests" value="basketball" id="uniqueID3" />
+      <span class="toggle-track">
+        <span class="toggle-indicator">
+        </span>
+      </span>
+      Basketball
+    </label>
+
+    <label class="toggle" for="uniqueID4">
+      <input type="checkbox" class="toggle__input" name="interests" value="tennis" id="uniqueID4" />
+      <span class="toggle-track">
+        <span class="toggle-indicator">
+        </span>
+      </span>
+      Tennis
+    </label>
+  </p>
+  <button class="pure-material-button-contained" type="submit">Sign Up</button>
+</form>
+
+<script>
+  $("form").on("submit", function(event) {
+      event.preventDefault();
+      const data = new FormData(event.target);
+      const value = Object.fromEntries(data.entries());
+      value.interests = data.getAll("interests");
+
+      $.post({
+        url: "http://localhost:8080/api/auth/sign-up",
+        contentType: 'application/json',
+        dataType: 'json',
+        data: JSON.stringify(value),
+        complete: function(jqXHR) {
+          if (jqXHR.status != 200) {
+            alert('Something went wrong!');
+          } else {
+            window.location.href = "login.html";
+          }
+        }
+      });
+  })
+</script>
+  
+  
+</body>
+</html>

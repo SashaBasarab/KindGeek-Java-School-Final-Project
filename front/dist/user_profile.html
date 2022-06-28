@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>profile with data and skills - Bootdey.com</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+<div class="container">
+    <div class="main-body">
+
+    
+          <div class="row gutters-sm">
+            <div class="col-md-4 mb-3">
+              <div class="card">
+                <div class="card-body">
+                  <div class="d-flex flex-column align-items-center text-center">
+                    <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="Admin" id="avatar" class="rounded-circle" width="150">
+                    <div class="mt-3">
+                      <h4 id="name_header"></h4>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+            </div>
+            <div class="col-md-8">
+              <div class="card mb-3">
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col-sm-3">
+                      <h6 class="mb-0">Username</h6>
+                    </div>
+                    <div class="col-sm-9 text-secondary" id="name">
+                      <!-- Kenneth Valdez -->
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="row">
+                    <div class="col-sm-3">
+                      <h6 class="mb-0">Email</h6>
+                    </div>
+                    <div class="col-sm-9 text-secondary" id="email">
+                      <!-- fip@jukmuh.al -->
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="row">
+                    <div class="col-sm-3">
+                      <h6 class="mb-0">Nationality</h6>
+                    </div>
+                    <div class="col-sm-9 text-secondary" id="nationality">
+                      <!-- nationality -->
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="row">
+                    <div class="col-sm-3">
+                      <h6 class="mb-0">Mother tongue</h6>
+                    </div>
+                    <div class="col-sm-9 text-secondary" id="mother_tongue">
+                      <!-- Mother tongue -->
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="row">
+                    <div class="col-sm-3">
+                      <h6 class="mb-0">Hobbies</h6>
+                    </div>
+                    <div class="col-sm-9 text-secondary" id="interests">
+                      <!-- Bay Area, San Francisco, CA -->
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="row">
+                    <div class="col-sm-12">
+                      <a class="btn btn-info " target="__blank" href="user_profile_edit_data.html">Edit</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              
+
+
+
+            </div>
+          </div>
+
+        </div>
+    </div>
+
+<script>
+  $(document).ready(function() {
+        let response = fetch("http://localhost:8080/user/find-user-by-id/" + localStorage.getItem('userId'), {
+        method: 'GET',
+        headers: {
+            'Content-type': 'application/json',
+            'Authorization': `Bearer ` + localStorage.getItem('token'),
+        }
+    }).then(response => {
+    if (!response.ok) {
+      throw new Error(`Request failed with status ${reponse.status}`)
+    }
+     response.json()
+     .then((user) => {
+       console.log(user);
+       document.getElementById('name_header').innerHTML = user.username;
+       document.getElementById('name').innerHTML = user.username;
+       document.getElementById('email').innerHTML = user.email;
+       document.getElementById('nationality').innerHTML = user.nationality;
+       document.getElementById('mother_tongue').innerHTML = user.motherTongue;
+       document.getElementById('interests').innerHTML = user.interests;
+       document.getElementById('avatar').src = user.userAvatarUrl;
+  });
+  });
+  })
+
+
+  </script>
+
+</body>
+</html>

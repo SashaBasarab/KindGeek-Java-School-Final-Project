@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <title>CodePen - Material Registration Form - Pure CSS Material Components</title>
+  <link rel="stylesheet" href="./style.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+</head>
+<body>
+<div>
+      <form class="find_friend" id="set_ready_form">
+        <h1>Type name of game</h1>
+      
+        <label class="pure-material-textfield-outlined">
+          <input id="name_of_game_input" placeholder="Name of game" name="gameName" type="text">
+        </label>
+      
+        <button id="set_ready_button">Set game</button>
+      </form>
+      <form class="find_friend" id="find_teammate_form">
+        <h1>Type additional info about teammate you want to find</h1>
+        
+        <label class="pure-material-textfield-outlined">
+          <input placeholder="Nationality" name="nationality" type="text" id="nationality_input">
+       </label>
+      
+       <label class="pure-material-textfield-outlined">
+          <input placeholder="Mother tongue" name="motherTongue" type="text" id="mother_tongue_input">
+        </label>
+      
+        <label class="pure-material-textfield-outlined">
+          <input placeholder="Social rating" name="socialRating" type="text" id="social_rating_input">
+        </label>
+      
+        <button class="pure-material-button-contained" id="find_button" type="submit">Find</button>
+      </form>
+</div>
+
+<div class="col-lg-6" id="col-lg-6">
+    <div class="central-meta">
+        <ul class="liked-pages"  id="append">
+        </ul>
+    <div><button id="return_to_previous_page_button">Return</button></div>
+</div>
+
+
+    <style>
+
+.page-infos {
+    float: left;
+    padding: 0 15px;
+    width: 100%;
+    box-sizing: border-box;
+    display: block;
+}
+
+#col-lg-6 {
+    display: none;
+}
+
+#set_ready_form {
+    margin-bottom: 3%;
+    margin-top: 2%;
+}
+
+#set_ready_button {
+    width: 30%;
+}
+
+button {
+    width: 50%;
+}
+
+.nearby-contct {
+    display: inline-block;
+    list-style: outside none none;
+    margin-bottom: 0;
+    margin-top: 15px;
+    padding-left: 0;
+    width: 50%;
+}
+
+.nearby-contct > li {
+    background: #fff none repeat scroll 0 0;
+    border: 1px solid #eaf1f6;
+    display: inline-block;
+    margin-bottom: 20px;
+    padding: 20px;
+    width: 100%;
+    transition: all 0.15s linear 0s;
+}
+
+.nearby-contct > li:last-child {
+    margin-bottom: 0;
+}
+
+.nearby-contct > li:hover {
+    box-shadow: 0 8px 8px #e1e8ec;
+    border-color: transparent;
+}
+.friend_avatar {
+    height: 150px;
+    border: black;
+    border-radius: 50%;
+}
+.pepl-info {
+    display: inline-block;
+    padding-left: 15px;
+    position: relative;
+    vertical-align: middle;
+    width: 58%;
+}
+
+.pepl-info > h4 {
+    display: inline-block;
+    text-align: center;
+    font-size: 24px;
+    font-weight: 600;
+    text-transform: capitalize;
+}
+.pepl-info > span {
+    float: left;
+    font-size: 13px;
+    text-transform: capitalize;
+    width: 100%;
+    line-height: initial;
+}
+
+.pepl-info > em {
+    display: inline-block;
+    font-size: 13px;
+    font-style: normal;
+    line-height: initial;
+    margin-left: 40px;
+    text-align: right;
+    vertical-align: baseline;
+}
+
+.pepl-info > em i {
+    margin-right: 5px;
+}
+a.add-butn.more-action {
+    background: lightslategray none repeat scroll 0 0;
+    right: 74px;
+}
+.nearly-pepls {
+    display: flex;
+    justify-content: center;
+}
+img {
+    float: right;
+}
+.friend_username {
+    margin-left: 165px;
+}
+a {
+    color: black;
+    text-align: center;
+}
+.friend_username {
+    text-align: center;
+}
+h3 {
+    text-align: center;
+    font-size: 24px;
+}
+h5 {
+    text-align: center;
+    font-size: 18px;
+}
+h6 {
+    text-align: center;
+    font-size: 14px;
+}
+#return_button_container {
+    margin-top: 0;
+}
+
+.avatars {
+    width: 100%;
+}
+
+.central-meta {
+    margin-left: 20%;
+    background: #fdfdfd none repeat scroll 0 0;
+    border: 1px solid #ede9e9;
+    border-radius: 3px;
+    display: inline-block;
+    width: 60%;
+    margin-bottom: 20px;
+    padding: 25px;
+    box-sizing: border-box;
+    font-family: "Muli", "Segoe Ui";
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #212529;
+}
+
+li {
+    background: #fff none repeat scroll 0 0;
+    border: 1px solid #e1e8ed;
+    display: inline-block;
+    transition: all 0.15s linear 0s;
+    position: relative;
+    width: 100%;
+    padding-bottom: 15px;
+    margin-top: 20px;
+    overflow: hidden;
+}
+
+.f-page {
+    display: flex;
+    flex: 1;
+    justify-content: center;
+    flex-wrap: wrap
+}
+    </style>
+
+<script>
+    
+    var setReadyForm = document.getElementById('set_ready_form');
+    var findTeammateForm = document.getElementById('find_teammate_form');
+    const setGameButton = document.querySelector('#set_ready_button');
+
+    setGameButton.addEventListener('click', event => {
+        event.preventDefault();
+
+        var gameNameInputValue = document.getElementById('name_of_game_input');
+        console.log(gameNameInputValue)
+        $.ajax({
+			url: "http://localhost:8080/find-teammate/ready-to-find-teammates/" + localStorage.getItem('userId') + "?gameName=" + gameNameInputValue.value,
+            method: 'PUT',
+			headers: {
+			'Content-type': 'application/json',
+			'Authorization': `Bearer ` + localStorage.getItem('token'),
+			},
+			success: function() {
+				setReadyForm.style.display = "none";
+			}
+		});
+    })
+        
+
+
+  $("#find_teammate_form").on("submit", function(event) {
+      event.preventDefault();
+      const data = new FormData(event.target);
+      const value = Object.fromEntries(data.entries());
+      console.log(value);
+
+      var socialRating = document.getElementById('social_rating_input').value;;
+      var nationality = document.getElementById('nationality_input').value;
+      var motherTongue = document.getElementById('mother_tongue_input').value;;
+      var gameName = document.getElementById('name_of_game_input').value;;
+      
+      let response = fetch("http://localhost:8080/find-teammate/begin?userId= " + localStorage.getItem('userId') + "&gameName=" + gameName + "&socialRating=" + socialRating + "&nationality=" + nationality + "&motherTongue=" + motherTongue, {
+				  method: 'GET',
+				  headers: {
+					  'Content-type': 'application/json',
+					  'Authorization': `Bearer ` + localStorage.getItem('token'),
+				  },
+			  }).then(response => {
+			  if (!response.ok) {
+				throw new Error(`Request failed with status ${reponse.status}`)
+			  }
+              console.log(JSON.stringify(value));
+			   response.json()
+			   .then((users) => {
+                   console.log(users);
+                   findTeammateForm.style.display = "none";
+                   users.forEach(user => {
+                       var newElement5 = document.createElement('li');
+                       newElement5.innerHTML = 
+                       `
+					<div class="f-page">
+						<figure>
+							<a href="friend-page.html" title="" id="friend_switch_page"><img class="avatars" src="${user.userAvatarUrl}" alt=""></a>
+                            <div class="page-infos">
+							    <h5>${user.username + ', ' + user.nationality}</h5>
+						    </div>
+							<div class="dropdown pgs">
+								<button class="add_to_friends_button">Add to friends</button>
+							</div>
+						</figure>
+						
+					</div>			
+                       `
+                       ;
+                       var switchPageButton = newElement5.querySelector('#friend_switch_page');
+										switchPageButton.addEventListener('click', function() {
+											localStorage.setItem('userToVisitId', user.id);
+										})
+                       var addToFriendsButton = newElement5.querySelector('.add_to_friends_button');
+                       addToFriendsButton.addEventListener('click', (event) => {
+                           $.ajax({
+                               url: "http://localhost:8080/user/friends/add-new-friend?userId=" + localStorage.getItem('userId') + "&friendId=" + user.id,
+                               type: 'POST',
+                               headers: {
+                                'Content-type': 'application/json',
+								'Authorization': `Bearer ` + localStorage.getItem('token'),
+                               },
+                               success: function() {
+                                   console.log("Success");
+                                   alert("Success");
+                                   addToFriendsButton.style.display = "none";
+                               }
+                           })
+                       })
+                        $("#append").append(newElement5);
+                   })
+                         document.querySelector('#append').style.display = "block";
+                         document.querySelector('#col-lg-6').style.display = "block";
+                         document.querySelector('#set_ready_form').style.display = "none";
+                         document.querySelector('#find_teammate_form').style.display = "none";
+                         const returnToPreviousPageButton = document.querySelector('#return_to_previous_page_button');
+                         returnToPreviousPageButton.addEventListener('click', function() {
+                         document.querySelector('#append').innerHTML = '';
+                         document.querySelector('#append').style.display = "none";
+                         document.querySelector('#col-lg-6').style.display = "none";
+                         document.querySelector('#set_ready_form').style.display = "block";
+                         document.querySelector('#find_teammate_form').style.display = "block";
+                    })
+			});
+			});
+  })
+</script>
+  
+  
+</body>
+</html>

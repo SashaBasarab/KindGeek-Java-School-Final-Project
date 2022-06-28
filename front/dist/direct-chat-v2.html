@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+	<meta charset="UTF-8">
+	<title>CodePen - WhatsApp Inspired Bootstrap Chat UI Direct Messaging App</title>
+	<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css'>
+	<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/material-design-icons/3.0.1/iconfont/material-icons.min.css'>
+	
+    <link rel="stylesheet" href="css/main.min.css">
+    <link rel="stylesheet" href="css/main.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/color.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="icon" href="images/fav.png" type="image/png" sizes="16x16"> 
+	<link rel="stylesheet" href="./direct-chat-style.css">
+	<script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+</head>
+<body>
+<div class="container">
+	<div class="row no-gutters">
+	  <div class="col-md-4 border-right">
+		<div class="settings-tray">
+		  <img class="profile-image" src="https://www.clarity-enhanced.net/wp-content/uploads/2020/06/filip.jpg" alt="Profile img" id="profile-img">
+		  <span class="settings-tray--right">
+			<i class="material-icons" id="reload_page_button">cached</i>
+		  </span>
+		</div>
+		<div class="search-box" id="prepend_chat_after">
+		  <div class="input-wrapper">
+			<i class="material-icons">search</i>
+			<input placeholder="Search here" type="text">
+		  </div>
+		</div>
+	  </div>
+	  <div class="col-md-8">
+		<div class="settings-tray">
+			<div class="friend-drawer no-gutters friend-drawer--grey">
+			<img class="profile-image" src="https://www.clarity-enhanced.net/wp-content/uploads/2020/06/robocop.jpg" alt="" id="interlocutor_avatar_2">
+			<div class="text">
+			  <h6 id="interlocutor_username_2">Robo Cop</h6>
+			</div>
+			<span class="settings-tray--right">
+			  <i class="material-icons" id="reload_page_button_2">cached</i>
+			</span>
+		  </div>
+		</div>
+		<div class="chat-panel" id="messages_to_append">
+		  <div class="row">
+			<div class="col-12">
+			<form id="send_new_message_form">
+				<div class="chat-box-tray">
+					<i class="fa fa-image"></i>
+					<label class="fileContainer">
+						<input type="file" id="file">
+					</label>
+					<input type="text" placeholder="Type your message here..." id="type-new-message">
+					<button id="send-button" type="submit"><i class="material-icons">send</i></button>
+				  </div>
+			</form>
+			</div>
+		  </div>
+		</div>
+	  </div>
+	</div>
+  </div>
+  	<style>
+		#send-button {
+			border: none;
+			background: #ededed;
+		}
+		.message_image {
+			width: 105px;
+    		height: 90px;
+			
+		}
+		.message_image_class {
+			display: flex;
+			justify-content: flex-end;
+		}
+		.settings-tray--right i {
+			margin-left: 108px;
+		}
+		.container {
+			margin: 180px auto;
+		}
+		.fileContainer [type=file] {
+			cursor: pointer;
+			display: block;
+			filter: alpha(opacity=0);
+			opacity: 0;
+			position: absolute;
+			right: -27px;
+			text-align: right;
+			top: -15px;
+			width: 40px;
+			overflow: hidden;
+		}
+	</style>
+  	<script>
+		$(document).ready(function() {
+			let response = fetch("http://localhost:8080/user/find-user-by-id/" + localStorage.getItem('userId'), {
+				  method: 'GET',
+				  headers: {
+					  'Content-type': 'application/json',
+					  'Authorization': `Bearer ` + localStorage.getItem('token'),
+				  }
+			  }).then(response => {
+			  if (!response.ok) {
+				throw new Error(`Request failed with status ${reponse.status}`)
+			  }
+			   response.json()
+			   .then((user) => {   
+					document.getElementById('profile-img').src = user.userAvatarUrl;
+
+				});
+				});
+
+			let chatsResponse = fetch("http://localhost:8080/chat/get-all-direct-chats-by-user-id/" + localStorage.getItem('userId'), {
+				  method: 'GET',
+				  headers: {
+					  'Content-type': 'application/json',
+					  'Authorization': `Bearer ` + localStorage.getItem('token'),
+				  }
+			  }).then(chatsResponse => {
+			  if (!chatsResponse.ok) {
+				throw new Error(`Request failed with status ${reponse.status}`)
+			  }
+			  chatsResponse.json()
+			   .then((chats) => {   
+					console.log(chats);
+					chats.forEach(chat => {
+						console.log(chat.user1.username);
+						console.log(chat.user2.username);
+						var newChatElement = document.createElement('div');
+						if (chat.user1.id == localStorage.getItem('userId')) {
+							let messagesResponse = fetch("http://localhost:8080/chat/" + chat.id + "/get-recent-message", {
+								method: 'GET',
+								headers: {
+									'Content-type': 'application/json',
+									'Authorization': `Bearer ` + localStorage.getItem('token'),
+								}
+							}).then(messagesResponse => {
+							if (!messagesResponse.ok) {
+								throw new Error(`Request failed with status ${reponse.status}`)
+							}
+							messagesResponse.json()
+							.then((messages) => {
+								console.log(messages);
+								newChatElement.innerHTML = 
+							`
+							<div class="friend-drawer friend-drawer--onhover">
+								<img class="profile-image" src="${chat.user2.userAvatarUrl}" alt="">
+								<div class="text">
+									<h6>${chat.user2.username}</h6>
+									<p class="text-muted">${messages.messageValue}</p>
+								</div>
+								<span class="time text-muted small">${messages.creationTime.slice(11, 16)}</span>
+							</div>
+							<hr>
+							`
+							;
+							var switchChatButton1 = newChatElement.querySelector('.friend-drawer');
+							switchChatButton1.addEventListener('click', function() {
+								localStorage.setItem('switchChatId', chat.id);
+								localStorage.setItem('interlocutorId', chat.user2.id);
+								window.location.reload();
+							})
+								});
+							});
+							console.log(chat.id);
+							
+						} else {
+							let messagesResponse = fetch("http://localhost:8080/chat/get-all-messages/" + chat.id, {
+								method: 'GET',
+								headers: {
+									'Content-type': 'application/json',
+									'Authorization': `Bearer ` + localStorage.getItem('token'),
+								}
+							}).then(messagesResponse => {
+							if (!messagesResponse.ok) {
+								throw new Error(`Request failed with status ${reponse.status}`)
+							}
+							messagesResponse.json()
+							.then((messages) => {
+								newChatElement.innerHTML = 
+							`
+							<div class="friend-drawer friend-drawer--onhover">
+								<img class="profile-image" src="${chat.user1.userAvatarUrl}" alt="">
+								<div class="text">
+									<h6>${chat.user1.username}</h6>
+									<p class="text-muted"${messages.messageValue}</p>
+								</div>
+								<span class="time text-muted small">${messages.creationTime.slice(11, 16)}</span>
+							</div>
+							<hr>
+							`
+							;
+							var switchChatButton = newChatElement.querySelector('.friend-drawer');
+							switchChatButton.addEventListener('click', function() {
+								localStorage.setItem('switchChatId', chat.id);
+								localStorage.setItem('interlocutorId', chat.user1.id);
+								window.location.reload();
+							})
+								});
+							});
+							console.log(chat.id);
+							
+						}
+						$("#prepend_chat_after").after(newChatElement);
+					})
+
+				});
+				});
+
+			let messagesResponse = fetch("http://localhost:8080/chat/get-all-messages/" + localStorage.getItem('switchChatId'), {
+				method: 'GET',
+				  headers: {
+					  'Content-type': 'application/json',
+					  'Authorization': `Bearer ` + localStorage.getItem('token'),
+				  }
+			  }).then(messagesResponse => {
+			  if (!messagesResponse.ok) {
+				throw new Error(`Request failed with status ${reponse.status}`)
+			  }
+			  messagesResponse.json()
+			   .then((messages) => {
+				   console.log(messages);
+				   localStorage.setItem('interlocutorId', messages[0].receiverId);
+					messages.forEach(message => {
+						var newMessageElement = document.createElement('div');
+						newMessageElement.classList.add('row');
+						newMessageElement.classList.add('no-gutters');
+						if (message.senderId == localStorage.getItem('userId')) {
+							if(message.messageImageUrl.length == 0) {
+								newMessageElement.innerHTML = 
+							`
+							<div class="col-md-3 offset-md-9">
+								<div class="chat-bubble chat-bubble--right">
+									${message.messageValue}
+								</div>
+							</div>
+							`
+							} else {
+							newMessageElement.innerHTML = 
+							`
+							<div class="col-md-3 offset-md-9">
+								<div class="chat-bubble chat-bubble--right">
+									${message.messageValue}
+								<img src="${message.messageImageUrl[0]}" class="message_image">
+								</div>
+								
+							</div>
+							`
+							;
+							}
+						} else {
+							if (message.messageImageUrl.length == 0) {
+								newMessageElement.innerHTML = 
+								`
+								<div class="col-md-3">
+									<div class="chat-bubble chat-bubble--left">
+										${message.messageValue}
+									</div>
+								</div>
+								`
+								;
+							} else {
+								newMessageElement.innerHTML = 
+								`
+								<div class="col-md-3">
+									<div class="chat-bubble chat-bubble--left">
+										${message.messageValue}
+									</div>
+									<div class="message_image_class"><img src="${message.messageImageUrl[0]}" class="message_image"></div>
+								</div>
+								`
+								;
+							}
+							
+						}
+						$("#messages_to_append").before(newMessageElement);
+					})
+				});
+				});
+				let response2 = fetch("http://localhost:8080/user/find-user-by-id/" + localStorage.getItem('interlocutorId'), {
+				  method: 'GET',
+				  headers: {
+					  'Content-type': 'application/json',
+					  'Authorization': `Bearer ` + localStorage.getItem('token'),
+				  }
+			  }).then(response2 => {
+			  if (!response2.ok) {
+				throw new Error(`Request failed with status ${reponse.status}`)
+			  }
+			   response2.json()
+			   .then((user) => {
+					document.getElementById('interlocutor_avatar_2').src = user.userAvatarUrl;
+					document.getElementById('interlocutor_username_2').innerHTML = user.username;
+				});
+				});
+				
+			})
+
+		const reloadPageButton = document.getElementById('reload_page_button');
+		reloadPageButton.addEventListener('click', function() {
+			window.location.reload();
+		})
+
+		const reloadPageButton2 = document.getElementById('reload_page_button_2');
+		reloadPageButton2.addEventListener('click', function() {
+			window.location.reload();
+		})
+		
+		$("#send_new_message_form").on("submit", function(event) {
+			event.preventDefault();
+			var inputMessage = document.getElementById('type-new-message').value;
+			const files = document.getElementById('file');
+			console.log(files);
+			var formData = new FormData();
+			formData.append('multipartFile', files.files[0]);
+			$.ajax({
+        			url: "http://localhost:8080/chat/send-new-message/" + localStorage.getItem('userId') + "/" + localStorage.getItem('interlocutorId') + "/" + localStorage.getItem('switchChatId') + "?messageValue=" + inputMessage,
+					type: 'POST',
+					contentType: false, 
+      				processData: false,
+	 		 		data: formData,
+					headers: {
+					  'Authorization': `Bearer ` + localStorage.getItem('token'),
+				  	},
+					success: function() {
+						window.location.reload();
+					}
+				});
+		})
+	</script>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js'></script>
+  <script  src="./direct-chat-script.js"></script>
+
+</body>
+</html>

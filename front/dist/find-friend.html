@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <title>CodePen - Material Registration Form - Pure CSS Material Components</title>
+  <link rel="stylesheet" href="./style.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+</head>
+<body>
+<div id="wrapper">
+  <form class="find_friend" id="find_friend_form" method="post">
+    <h1>Type info about user you want to find</h1>
+  
+    <label class="pure-material-textfield-outlined">
+      <input placeholder="Username" name="username" type="text">
+    </label>
+    
+    <label class="pure-material-textfield-outlined">
+      <input placeholder="Nationality" name="nationality" type="text">
+   </label>
+  
+   <label class="pure-material-textfield-outlined">
+      <input placeholder="Mother tongue" name="motherTongue" type="text">
+    </label>
+  
+    <label class="pure-material-textfield-outlined">
+      <input placeholder="Social rating" name="socialRating" type="text">
+    </label>
+  
+    <!-- // -->
+  
+    <h3>Choose friend's hobbies</h3>
+  
+    <p class="parent">
+      <label class="toggle" for="uniqueID">
+        <input type="checkbox" class="toggle__input" name="interests" value="anime" id="uniqueID" />
+        <span class="toggle-track">
+          <span class="toggle-indicator">
+          </span>
+        </span>
+        Anime
+      </label>
+  
+      
+      <label class="toggle" for="uniqueID1">
+        <input type="checkbox" class="toggle__input" name="interests" value="computer games" id="uniqueID1" />
+        <span class="toggle-track">
+          <span class="toggle-indicator">
+          </span>
+        </span>
+        Computer games
+      </label>
+  
+      
+      <label class="toggle" for="uniqueID2">
+        <input type="checkbox" class="toggle__input" name="interests" value="football" id="uniqueID2" />
+        <span class="toggle-track">
+          <span class="toggle-indicator">
+          </span>
+        </span>
+        Football
+      </label>
+  
+      <label class="toggle" for="uniqueID3">
+        <input type="checkbox" class="toggle__input" name="interests" value="basketball" id="uniqueID3" />
+        <span class="toggle-track">
+          <span class="toggle-indicator">
+          </span>
+        </span>
+        Basketball
+      </label>
+  
+      <label class="toggle" for="uniqueID4">
+        <input type="checkbox" class="toggle__input" name="interests" value="tennis" id="uniqueID4" />
+        <span class="toggle-track">
+          <span class="toggle-indicator">
+          </span>
+        </span>
+        Tennis
+      </label>
+    </p>
+    <button class="pure-material-button-contained" id="find_button" type="submit">Find</button>
+  </form>
+  <div class="frnds" id="id_to_remove">
+    <ul class="nearby-contct" id="ul_user_list">
+          
+    </ul>
+    <div id="return_button_container"></div>
+</div>
+</div>
+
+
+
+    <style>
+button {
+    width: 50%;
+}
+
+#id_to_remove {
+  width: 100%;
+}
+
+#wrapper {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.nearby-contct {
+    display: inline-block;
+    list-style: outside none none;
+    margin-bottom: 0;
+    margin-top: 15px;
+    padding-left: 0;
+    width: 50%;
+    margin-left: 25%;
+}
+
+.nearby-contct > li {
+    background: #fff none repeat scroll 0 0;
+    border: 1px solid #eaf1f6;
+    display: inline-block;
+    margin-bottom: 20px;
+    padding: 20px;
+    width: 100%;
+    transition: all 0.15s linear 0s;
+}
+
+.nearby-contct > li:last-child {
+    margin-bottom: 0;
+}
+
+.nearby-contct > li:hover {
+    box-shadow: 0 8px 8px #e1e8ec;
+    border-color: transparent;
+}
+.friend_avatar {
+    height: 150px;
+    border: black;
+    border-radius: 50%;
+}
+.pepl-info {
+    display: inline-block;
+    padding-left: 15px;
+    position: relative;
+    vertical-align: middle;
+    width: 58%;
+}
+
+.pepl-info > h4 {
+    display: inline-block;
+    text-align: center;
+    font-size: 24px;
+    font-weight: 600;
+    text-transform: capitalize;
+}
+.pepl-info > span {
+    float: left;
+    font-size: 13px;
+    text-transform: capitalize;
+    width: 100%;
+    line-height: initial;
+}
+
+.pepl-info > em {
+    display: inline-block;
+    font-size: 13px;
+    font-style: normal;
+    line-height: initial;
+    margin-left: 40px;
+    text-align: right;
+    vertical-align: baseline;
+}
+
+.pepl-info > em i {
+    margin-right: 5px;
+}
+a.add-butn.more-action {
+    background: lightslategray none repeat scroll 0 0;
+    right: 74px;
+}
+.nearly-pepls {
+    display: flex;
+    justify-content: center;
+}
+img {
+    float: right;
+}
+.friend_username {
+    margin-left: 165px;
+}
+a {
+    color: black;
+    text-align: center;
+}
+.friend_username {
+    text-align: center;
+}
+h3 {
+    text-align: center;
+    font-size: 24px;
+}
+h5 {
+    text-align: center;
+    font-size: 18px;
+}
+h6 {
+    text-align: center;
+    font-size: 14px;
+}
+#return_button_container {
+    margin-top: 0;
+}
+    </style>
+<script>
+  $("form").on("submit", function(event) {
+      event.preventDefault();
+      const data = new FormData(event.target);
+      const value = Object.fromEntries(data.entries());
+      value.interests = data.getAll("interests");
+      console.log(value);
+
+      let response = fetch("http://localhost:8080/user/find-user?userId=" + localStorage.getItem('userId') + "&username=" + value.username + "&socialRating=" + value.socialRating + "&nationality=" + value.nationality + "&motherTongue=" + value.motherTongue + "&strInterests=" + value.interests, {
+				  method: 'GET',
+				  headers: {
+					  'Content-type': 'application/json',
+					  'Authorization': `Bearer ` + localStorage.getItem('token'),
+				  },
+                  data: JSON.stringify(value),
+			  }).then(response => {
+			  if (!response.ok) {
+				throw new Error(`Request failed with status ${reponse.status}`)
+			  }
+              console.log(JSON.stringify(value));
+			   response.json()
+			   .then((users) => {
+                 document.getElementById('find_friend_form').style.display = "none";
+                 document.getElementById('id_to_remove').style.display = "block";
+                 document.getElementById('return_button_container').style.display = "block";
+				 console.log(users);
+                 users.forEach(element => {
+                    const newElement0 = document.createElement('li');
+                    newElement0.style.width = "100%";
+                    newElement0.innerHTML = 
+                  `	<div class="nearly-pepls">
+                              <div>
+                                  <figure>
+                          <a href="friend-page.html" id="friend_switch_page" title=""><img src="${element.userAvatarUrl}" alt="" class="friend_avatar"></a>
+                        </figure>
+                              </div>
+                    <div class="pepl-info">
+                      <h3>${element.username}</h3>
+                                  <h5>${element.nationality}</h5>
+                                  <h6>${element.interests}</h6>
+                      <button title="" class="add-butn more-action" data-ripple="" class="unfriend_user">Add Friend</button>
+                    </div>
+                    </div>`;
+                    var switchPageButton = newElement0.querySelector('#friend_switch_page');
+										switchPageButton.addEventListener('click', function() {
+											localStorage.setItem('userToVisitId', element.id);
+										})
+                    var addToFriendsButton = newElement0.querySelector('.add-butn');
+                    addToFriendsButton.addEventListener('click', (event) => {
+                           $.ajax({
+                               url: "http://localhost:8080/user/friends/add-new-friend?userId=" + localStorage.getItem('userId') + "&friendId=" + element.id,
+                               type: 'POST',
+                               headers: {
+                                'Content-type': 'application/json',
+								                'Authorization': `Bearer ` + localStorage.getItem('token'),
+                               },
+                               success: function(jqXHR) {
+                                   console.log("Success");
+                                   alert("Success");
+                                   addToFriendsButton.style.display = "none";
+                               }
+                           })
+                          });
+              
+					$('#ul_user_list').append(newElement0);
+                 })
+                 var returnButton = document.createElement('button');
+                 returnButton.innerHTML = 'Return to previous page';
+                 returnButton.classList.add('pure-material-button-contained');
+                 returnButton.id = 'return_button';
+                 $('#return_button_container').append(returnButton);
+                 returnButton.addEventListener('click', (event) => {
+                    document.getElementById('ul_user_list').innerHTML = '';
+                     returnButton.remove();
+                     document.getElementById('find_friend_form').style.display = "block";
+                 })
+			});
+			});
+  })
+</script>
+</body>
+</html>
